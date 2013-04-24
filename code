@@ -1,0 +1,25 @@
+import urllib
+from HTMLParser import HTMLParser
+import ctypes
+
+response=urllib.urlopen('http://www.reddit.com/r/gaming/')
+html=response.read()
+
+
+class MyHTMLParser(HTMLParser):
+    def handle_starttag(self,tag,attrs):
+        if tag =="img":
+            #parse image tag only
+            for name, value in attrs:
+                if name == "src":
+                    if value[len(value)-5:len(value)]=="h.png":self.output=value
+                                 
+                                            
+
+
+parser= MyHTMLParser()
+parser.feed (html)
+imgurl=parser.output
+print imgurl
+
+urllib.urlretrieve(imgurl,"reddit.png")
